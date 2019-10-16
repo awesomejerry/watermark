@@ -1,0 +1,11 @@
+.Watermark img {
+  width: 100%;
+}
+
+.Watermark img[alt='raw'] {
+  display: none;
+}
+
+.Watermark canvas {
+  display: none;
+}
