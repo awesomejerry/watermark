@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import './Watermark.css';
+import Button from '@material-ui/core/Button';
 
 const size = 1080;
 
@@ -80,25 +81,46 @@ const Watermark = () => {
   const canvasRef = useRef(null);
   const rawRef = useRef(null);
   const previewRef = useRef(null);
+  const uploadRef = useRef(null);
   const [raw, setRaw] = useState(null);
   const [preview, setPreview] = useState(null);
 
   return (
     <div className="Watermark">
-      {raw && (
-        <img
-          src={raw}
-          ref={rawRef}
-          alt="raw"
-          onLoad={() => previewLoad({ canvasRef, rawRef, setPreview })}
-        />
-      )}
-      <input type="file" onChange={e => imageUpload(e, { setRaw })} />
+      <div className="button-margin">
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => uploadRef.current.click()}
+        >
+          Choose Photo
+        </Button>
+      </div>
+      <input
+        id="upload"
+        ref={uploadRef}
+        type="file"
+        onChange={e => imageUpload(e, { setRaw })}
+      />
+      <img
+        src={raw}
+        ref={rawRef}
+        alt="raw"
+        onLoad={() => previewLoad({ canvasRef, rawRef, setPreview })}
+      />
       <canvas ref={canvasRef} width={size} height={size} />
+      {preview && <img src={preview} ref={previewRef} alt="download" />}
       {preview && (
-        <a href={preview} download={'cover.jpg'}>
-          <img src={preview} ref={previewRef} alt="download" />
-        </a>
+        <div className="button-margin">
+          <Button
+            variant="contained"
+            color="primary"
+            href={preview}
+            download={'cover.jpg'}
+          >
+            Download
+          </Button>
+        </div>
       )}
     </div>
   );

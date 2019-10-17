@@ -1,11 +1,20 @@
+.Watermark {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .Watermark img {
   width: 100%;
 }
 
-.Watermark img[alt='raw'] {
+.Watermark input[type='file'],
+.Watermark img[alt='raw'],
+.Watermark canvas {
   display: none;
 }
 
-.Watermark canvas {
-  display: none;
+.button-margin {
+  margin: 1rem 0;
 }
