@@ -10,7 +10,7 @@ import {
 import DateFnsUtils from '@date-io/date-fns';
 
 const size = 1080;
-const logoRatio = 0.2;
+// const logoRatio = 0.2;
 
 const imageUpload = (e, { setRaw }) => {
   e.preventDefault();
@@ -35,10 +35,11 @@ const previewLoad = ({
 }) => {
   const hPadding = 80;
   const vPadding = 30;
+  const fontSize = 50;
 
   const canvas = canvasRef.current;
   const img = rawRef.current;
-  const logo = logoRef.current;
+  // const logo = logoRef.current;
   const ctx = canvas.getContext('2d');
   const hRatio = canvas.width / img.width;
   const vRatio = canvas.height / img.height;
@@ -60,13 +61,13 @@ const previewLoad = ({
     img.height * ratio
   );
 
-  ctx.drawImage(
-    logo,
-    hPadding - 20,
-    vPadding + 20,
-    size * logoRatio,
-    size * logoRatio
-  );
+  // ctx.drawImage(
+  //   logo,
+  //   hPadding - 20,
+  //   vPadding + 20,
+  //   size * logoRatio,
+  //   size * logoRatio
+  // );
 
   ctx.lineWidth = 5;
   ctx.strokeStyle = '#fafafa';
@@ -95,15 +96,44 @@ const previewLoad = ({
   ctx.stroke();
   ctx.closePath();
 
-  ctx.font = "normal 700 50px 'Noto Sans TC', 'Noto Sans', sans-serif";
-  ctx.fillStyle = '#fafafa';
-  ctx.textAlign = 'end';
-  ctx.fillText(name, size - hPadding, size - vPadding - 100);
-  ctx.fillText(
-    moment(date).format('YYYY/MM/DD'),
-    size - hPadding,
-    size - vPadding - 40
+  ctx.font = `normal 700 ${fontSize}px 'Noto Sans TC', 'Noto Sans', sans-serif`;
+  const textWidth1 = ctx.measureText('GATHERING').width;
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+  const text1X = hPadding;
+  const text1Y = vPadding + 70;
+  const text2X = text1X;
+  const text2Y = text1Y + 50;
+  ctx.fillRect(
+    text1X - 10,
+    text1Y - fontSize,
+    textWidth1 + 20,
+    (fontSize + 10) * 2
   );
+
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#fafafa';
+  ctx.fillText('NODE', text1X, text1Y);
+  ctx.fillText('GATHERING', text2X, text2Y);
+
+  ctx.font = `normal 700 ${fontSize -
+    10}px 'Noto Sans TC', 'Noto Sans', sans-serif`;
+  const textWidth2 = ctx.measureText(name).width;
+  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+  const text3X = size - hPadding;
+  const text3Y = size - vPadding - 100;
+  const text4X = text3X;
+  const text4Y = text3Y + 60;
+  ctx.fillRect(
+    text3X - textWidth2 - 20,
+    text3Y - (fontSize - 0),
+    textWidth2 + 40,
+    (fontSize + 10) * 2 + 10
+  );
+
+  ctx.textAlign = 'right';
+  ctx.fillStyle = '#fafafa';
+  ctx.fillText(name, text3X, text3Y);
+  ctx.fillText(moment(date).format('MM/DD'), text4X, text4Y);
 
   const dataURL = canvas.toDataURL();
   setPreview(dataURL);
@@ -117,7 +147,7 @@ const Watermark = () => {
   const logoRef = useRef(null);
   const [raw, setRaw] = useState(null);
   const [preview, setPreview] = useState(null);
-  const [name, setName] = useState(null);
+  const [name, setName] = useState('');
   const [date, setDate] = useState(null);
 
   return (
@@ -134,7 +164,7 @@ const Watermark = () => {
         <KeyboardDatePicker
           disableToolbar
           variant="inline"
-          format="yyyy/MM/dd"
+          format="MM/dd"
           margin="normal"
           label="Gathering Date"
           className="input-width"
