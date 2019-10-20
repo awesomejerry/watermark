@@ -3,6 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  font-family: 'Noto Sans TC', 'Noto Sans', sans-serif;
 }
 
 .Watermark img {
@@ -11,10 +12,15 @@
 
 .Watermark input[type='file'],
 .Watermark img[alt='raw'],
+.Watermark img[alt='logo'],
 .Watermark canvas {
   display: none;
 }
 
 .button-margin {
   margin: 1rem 0;
+}
+
+.input-width {
+  width: 100%;
 }
