@@ -115,7 +115,7 @@ const Watermark = () => {
           <Button
             variant="contained"
             color="primary"
-            href={preview}
+            href={preview.replace('image/png', 'image/octet-stream')}
             download={'cover.jpg'}
           >
             Download

@@ -3,7 +3,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-family: 'Noto Sans TC', 'Noto Sans', sans-serif;
+}
+
+.Watermark * {
+  font-weight: 700;
+  font-family: 'Montserrat', 'Noto Sans TC', 'Noto Sans', sans-serif !important;
+}
+
+.Watermark canvas {
+  letter-spacing: 1pt;
 }
 
 .Watermark img {
