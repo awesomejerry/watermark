@@ -7,7 +7,7 @@ import {
   KeyboardDatePicker
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { run } from './filters/filter-1';
+import { run } from './filters/filter-2';
 
 const size = 1080;
 
