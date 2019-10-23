@@ -137,7 +137,7 @@ export const run = ({ canvas, img, name, date, logo }) => {
 
   drawLowerText({ ctx, name, date });
 
-  const dataURL = canvas.toDataURL();
+  const dataURL = canvas.toDataURL('image/jpeg');
 
   return dataURL;
 };
