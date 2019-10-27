@@ -16,12 +16,13 @@ import { run } from './filters/filter-2';
 
 const size = 1080;
 
-const imageUpload = (e, { setRaw }) => {
+const imageUpload = (e, { setRaw, rawRef }) => {
   e.preventDefault();
 
   let reader = new FileReader();
   let file = e.target.files[0];
 
+  setRaw('');
   reader.onloadend = () => {
     setRaw(reader.result);
   };
@@ -109,7 +110,10 @@ const Watermark = () => {
         <Button
           variant="contained"
           color="primary"
-          onClick={() => uploadRef.current.click()}
+          onClick={() => {
+            uploadRef.current.value = '';
+            uploadRef.current.click();
+          }}
         >
           Choose Photo
         </Button>
@@ -118,7 +122,7 @@ const Watermark = () => {
         id="upload"
         ref={uploadRef}
         type="file"
-        onChange={e => imageUpload(e, { setRaw })}
+        onChange={e => imageUpload(e, { setRaw, rawRef })}
       />
       <img
         src={raw}
