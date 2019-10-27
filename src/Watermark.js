@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import './Watermark.css';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -67,6 +67,24 @@ const Watermark = () => {
   const [date, setDate] = useState(null);
   const [style, setStyle] = useState('white');
 
+  const processPreview = useCallback(() => {
+    previewLoad({
+      canvasRef,
+      rawRef,
+      setPreview,
+      name,
+      date,
+      logoRef,
+      style
+    });
+  }, [style, date, name]);
+
+  useEffect(() => {
+    if (preview) {
+      processPreview();
+    }
+  }, [preview, processPreview]);
+
   return (
     <div className="Watermark">
       <TextField
@@ -124,22 +142,7 @@ const Watermark = () => {
         type="file"
         onChange={e => imageUpload(e, { setRaw, rawRef })}
       />
-      <img
-        src={raw}
-        ref={rawRef}
-        alt="raw"
-        onLoad={() =>
-          previewLoad({
-            canvasRef,
-            rawRef,
-            setPreview,
-            name,
-            date,
-            logoRef,
-            style
-          })
-        }
-      />
+      <img src={raw} ref={rawRef} alt="raw" onLoad={() => processPreview()} />
       <img src={require('./logo.png')} ref={logoRef} alt="logo" />
       <canvas ref={canvasRef} width={size} height={size} />
       {preview && <img src={preview} ref={previewRef} alt="download" />}
