@@ -6,6 +6,11 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
 } from '@material-ui/pickers';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 import DateFnsUtils from '@date-io/date-fns';
 import { run } from './filters/filter-2';
 
@@ -30,7 +35,8 @@ const previewLoad = ({
   setPreview,
   name,
   date,
-  logoRef
+  logoRef,
+  style
 }) => {
   const canvas = canvasRef.current;
   const img = rawRef.current;
@@ -41,7 +47,8 @@ const previewLoad = ({
     img,
     name,
     date,
-    logo
+    logo,
+    style
   });
 
   setPreview(dataUrl);
@@ -57,13 +64,14 @@ const Watermark = () => {
   const [preview, setPreview] = useState(null);
   const [name, setName] = useState('');
   const [date, setDate] = useState(null);
+  const [style, setStyle] = useState('white');
 
   return (
     <div className="Watermark">
       <TextField
         id="standard-name"
         label="Gathering Name"
-        className="input-width"
+        fullWidth
         margin="normal"
         value={name}
         onChange={e => setName(e.target.value)}
@@ -75,7 +83,7 @@ const Watermark = () => {
           format="MM/dd"
           margin="normal"
           label="Gathering Date"
-          className="input-width"
+          fullWidth
           KeyboardButtonProps={{
             'aria-label': 'change date'
           }}
@@ -84,6 +92,19 @@ const Watermark = () => {
           onChange={date => setDate(date)}
         />
       </MuiPickersUtilsProvider>
+      <FormControl component="fieldset" fullWidth margin="normal">
+        <FormLabel component="legend">Style</FormLabel>
+        <RadioGroup
+          aria-label="gender"
+          name="gender1"
+          value={style}
+          onChange={e => setStyle(e.target.value)}
+          row
+        >
+          <FormControlLabel value="white" control={<Radio />} label="White" />
+          <FormControlLabel value="black" control={<Radio />} label="Black" />
+        </RadioGroup>
+      </FormControl>
       <div className="button-margin">
         <Button
           variant="contained"
@@ -104,7 +125,15 @@ const Watermark = () => {
         ref={rawRef}
         alt="raw"
         onLoad={() =>
-          previewLoad({ canvasRef, rawRef, setPreview, name, date, logoRef })
+          previewLoad({
+            canvasRef,
+            rawRef,
+            setPreview,
+            name,
+            date,
+            logoRef,
+            style
+          })
         }
       />
       <img src={require('./logo.png')} ref={logoRef} alt="logo" />

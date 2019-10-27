@@ -4,13 +4,20 @@ const size = 1080;
 // const logoRatio = 0.2;
 const hPadding = 40;
 const vPadding = 40;
+const TEXT_SPARE_SPACE = 120;
 
-const drawFrame = ({ ctx, size }) => {
+const COLOR_MAPPING = {
+  white: '#fafafa',
+  black: 'rgb(59, 74, 96)'
+};
+
+const drawFrame = ({ ctx, size, style }) => {
+  const color = COLOR_MAPPING[style];
   ctx.lineWidth = 3;
-  ctx.strokeStyle = '#fafafa';
+  ctx.strokeStyle = color;
 
   ctx.beginPath();
-  ctx.moveTo(hPadding, vPadding);
+  ctx.moveTo(hPadding + TEXT_SPARE_SPACE, vPadding);
   ctx.lineTo(size - hPadding, vPadding);
   ctx.stroke();
   ctx.closePath();
@@ -29,33 +36,25 @@ const drawFrame = ({ ctx, size }) => {
 
   ctx.beginPath();
   ctx.moveTo(vPadding, size - hPadding);
-  ctx.lineTo(vPadding, hPadding);
+  ctx.lineTo(vPadding, hPadding + TEXT_SPARE_SPACE / 2);
   ctx.stroke();
   ctx.closePath();
 };
 
-const drawUpperText = ({ ctx }) => {
+const drawUpperText = ({ ctx, style }) => {
+  const color = COLOR_MAPPING[style];
+
   const fontSize1 = 21;
   const fontSize2 = 16;
   const font1 = `normal 700 ${fontSize1}pt 'Montserrat', 'Noto Sans TC', 'Noto Sans', sans-serif`;
   const font2 = `normal 700 ${fontSize2}pt 'Montserrat', 'Noto Sans TC', 'Noto Sans', sans-serif`;
-  const text1X = hPadding - 5;
-  const text1Y = vPadding + fontSize1 * 0.75;
+  const text1X = hPadding - 2;
+  const text1Y = vPadding + fontSize1 * 0.75 + 1;
   const text2X = text1X;
   const text2Y = text1Y + fontSize1 + 5;
 
-  ctx.font = font2;
-  const textWidth1 = ctx.measureText('GATHERING').width;
-  ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-  ctx.fillRect(
-    text1X - 10,
-    text1Y - fontSize1 - 13,
-    textWidth1 + 20,
-    fontSize1 + fontSize2 + 40
-  );
-
   ctx.textAlign = 'left';
-  ctx.fillStyle = '#fafafa';
+  ctx.fillStyle = color;
 
   ctx.font = font1;
   ctx.fillText('NODE', text1X, text1Y);
@@ -86,7 +85,7 @@ const drawLowerText = ({ ctx, name, date }) => {
   const rectWidth = Math.max(textWidth1, textWidth2);
   ctx.fillRect(
     text1X - rectWidth - 12,
-    text1Y - fontSize1 - 19,
+    text1Y - fontSize1 - 18,
     rectWidth + 20,
     fontSize2 * 2 + 40
   );
@@ -101,7 +100,7 @@ const drawLowerText = ({ ctx, name, date }) => {
   ctx.fillText(dateString, text2X, text2Y);
 };
 
-export const run = ({ canvas, img, name, date, logo }) => {
+export const run = ({ canvas, img, name, date, logo, style }) => {
   const ctx = canvas.getContext('2d');
   const hRatio = canvas.width / img.width;
   const vRatio = canvas.height / img.height;
@@ -131,11 +130,11 @@ export const run = ({ canvas, img, name, date, logo }) => {
   //   size * logoRatio
   // );
 
-  drawFrame({ ctx, size });
+  drawFrame({ ctx, size, style });
 
-  drawUpperText({ ctx });
+  drawUpperText({ ctx, style });
 
-  drawLowerText({ ctx, name, date });
+  drawLowerText({ ctx, name, date, style });
 
   const dataURL = canvas.toDataURL('image/jpeg');
 
