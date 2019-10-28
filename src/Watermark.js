@@ -30,7 +30,7 @@ const imageUpload = (e, { setRaw, rawRef }) => {
   reader.readAsDataURL(file);
 };
 
-const previewLoad = ({
+const previewLoad = async ({
   canvasRef,
   rawRef,
   setPreview,
@@ -43,7 +43,7 @@ const previewLoad = ({
   const img = rawRef.current;
   const logo = logoRef.current;
 
-  const dataUrl = run({
+  const dataUrl = await run({
     canvas,
     img,
     name,
@@ -80,10 +80,10 @@ const Watermark = () => {
   }, [style, date, name]);
 
   useEffect(() => {
-    if (preview) {
+    if (raw) {
       processPreview();
     }
-  }, [preview, processPreview]);
+  }, [raw, processPreview]);
 
   return (
     <div className="Watermark">

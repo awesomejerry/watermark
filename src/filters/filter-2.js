@@ -136,7 +136,9 @@ export const run = ({ canvas, img, name, date, logo, style }) => {
 
   drawLowerText({ ctx, name, date, style });
 
-  const dataURL = canvas.toDataURL('image/jpeg');
-
-  return dataURL;
+  return new Promise((resolve, reject) => {
+    canvas.toBlob(function(blob) {
+      resolve(URL.createObjectURL(blob));
+    });
+  });
 };
